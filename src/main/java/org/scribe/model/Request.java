@@ -18,7 +18,7 @@ public class Request
   private static final String CONTENT_LENGTH = "Content-Length";
   private static final String CONTENT_TYPE = "Content-Type";
   private static RequestTuner NOOP = new RequestTuner() {
-    @Override public void tune(Request _){}
+    @Override public void tune(Request request){}
   };
   public static final String DEFAULT_CONTENT_TYPE = "application/x-www-form-urlencoded";
 
@@ -83,9 +83,13 @@ public class Request
     if (connection == null)
     {
       System.setProperty("http.keepAlive", connectionKeepAlive ? "true" : "false");
-      connection = (HttpURLConnection) new URL(completeUrl).openConnection();
+      connection = (HttpURLConnection) new URL(completeUrl).openConnection(getProxy());
       connection.setInstanceFollowRedirects(followRedirects);
     }
+  }
+
+  private Proxy getProxy() {
+    return Proxy.NO_PROXY;
   }
 
   /**
