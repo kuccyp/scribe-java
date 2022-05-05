@@ -83,13 +83,18 @@ public class Request
     if (connection == null)
     {
       System.setProperty("http.keepAlive", connectionKeepAlive ? "true" : "false");
-      connection = (HttpURLConnection) new URL(completeUrl).openConnection(getProxy());
+      Proxy proxy=getProxy();
+      if ( proxy != null ) {
+        connection = (HttpURLConnection) new URL(completeUrl).openConnection(proxy);
+      } else {
+        connection = (HttpURLConnection) new URL(completeUrl).openConnection();
+      }
       connection.setInstanceFollowRedirects(followRedirects);
     }
   }
 
   private Proxy getProxy() {
-    return Proxy.NO_PROXY;
+    return null;
   }
 
   /**
